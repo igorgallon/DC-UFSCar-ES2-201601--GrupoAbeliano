@@ -35,8 +35,8 @@ out/
 
 # Eclipse
 .settings/
-.classpath
-.project
+#.classpath
+#.project
 bin/
 
 # For Mac OS
