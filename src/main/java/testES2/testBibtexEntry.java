@@ -416,7 +416,7 @@ public class testBibtexEntry {
     }
 
     @Test
-    public void testTodosCamposPreenchidosBook() throws IOException {
+    public void testTodosCamposOpcionaisPreenchidosBook() throws IOException {
         StringWriter stringWriter = new StringWriter();
 
         BibEntry entry = new BibEntry("0002", "book");
