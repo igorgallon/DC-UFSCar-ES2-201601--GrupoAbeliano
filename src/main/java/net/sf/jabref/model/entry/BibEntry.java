@@ -132,6 +132,20 @@ public class BibEntry implements Cloneable {
     }
 
     /**
+     * Mock function to test, as the verification was made in the gui
+     */
+    public void mockSetCiteKey(String newCiteKey) {
+        // Checking if the key has at least 2 characters
+        if (newCiteKey.length() < 2) {
+            throw new IllegalArgumentException("BibTeX key must have at least 2 characters.");
+        }
+        // Checking if the first character is a letter
+        else if (!Character.isLetter(newCiteKey.charAt(0))) {
+            throw new IllegalArgumentException("BibTeX key must have a letter in the first position.");
+        }
+    }
+
+    /**
      * Returns the cite key AKA citation key AKA BibTeX key, or null if it is not set.
      *
      * Note: this is <emph>not</emph> the internal Id of this entry. The internal Id is always present, whereas the BibTeX key might not be present.
