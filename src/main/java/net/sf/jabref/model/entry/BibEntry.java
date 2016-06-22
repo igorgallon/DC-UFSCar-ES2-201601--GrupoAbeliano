@@ -352,25 +352,49 @@ public class BibEntry implements Cloneable {
             throw new IllegalArgumentException("The field name '" + name + "' is reserved");
         }
 
-        // Validations for the value in the year fields
-        if (name == "year") {
-            if (value.matches("[0-9]+")) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy");
-                Date date = new Date();
-                int currentYear = Integer.valueOf(dateFormat.format(date));
-
-                if (currentYear < Integer.parseInt(value)) {
-                    throw new IllegalArgumentException("The value of year is greater than the current year.");
-                }
-            } else {
-                throw new IllegalArgumentException("The value of year is illegal.");
-            }
-        }
+        // Checks if the value is valid
+        // Only checking year currently
+        checkField(name, value);
 
         changed = true;
 
         fields.put(fieldName, value);
         eventBus.post(new FieldChangedEvent(this, fieldName, value));
+    }
+
+    /**
+     * Checks if the entry is valid. Only the year field is implemented.
+     *
+     * @param name  The field to check.
+     * @param value The value to check.
+     */
+    public void checkField(String fieldName, String value) {
+        switch (fieldName) {
+        case "year":
+            checkYear(value);
+            break;
+        default:
+            throw new IllegalArgumentException("This field doesn't exist");
+        }
+    }
+
+    /**
+     * Checks if the year is valid.
+     *
+     * @param value The year to check.
+     */
+    public void checkYear(String value) {
+        if (value.matches("[0-9]+")) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy");
+            Date date = new Date();
+            int currentYear = Integer.valueOf(dateFormat.format(date));
+
+            if (currentYear < Integer.parseInt(value)) {
+                throw new IllegalArgumentException("The value of year is greater than the current year.");
+            }
+        } else {
+            throw new IllegalArgumentException("The value of year is illegal.");
+        }
     }
 
     /**
