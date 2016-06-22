@@ -373,8 +373,6 @@ public class BibEntry implements Cloneable {
         case "year":
             checkYear(value);
             break;
-        default:
-            throw new IllegalArgumentException("This field doesn't exist");
         }
     }
 

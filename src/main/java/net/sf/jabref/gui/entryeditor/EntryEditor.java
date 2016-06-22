@@ -1095,11 +1095,29 @@ public class EntryEditor extends JPanel implements EntryContainer {
 
                 // Make sure the key is legal:
                 String cleaned = LabelPatternUtil.checkLegalKey(newValue);
+                boolean keyIsValid = false;
                 if ((cleaned == null) || cleaned.equals(newValue)) {
-                    textField.setValidBackgroundColor();
+                    // Checking if the key has at least 2 characters
+                    if (newValue.length() < 2) {
+                        JOptionPane.showMessageDialog(frame,
+                                Localization.lang("BibTeX key must have at least 2 characters"),
+                                Localization.lang("Error setting field"), JOptionPane.ERROR_MESSAGE);
+                    }
+                    // Checking if the first character is a letter
+                    else if (!Character.isLetter(newValue.charAt(0))) {
+                        JOptionPane.showMessageDialog(frame,
+                                Localization.lang("BibTeX key must have a letter in the first position."),
+                                Localization.lang("Error setting field"), JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        keyIsValid = true;
+                        textField.setValidBackgroundColor();
+                    }
                 } else {
                     JOptionPane.showMessageDialog(frame, Localization.lang("Invalid BibTeX key"),
                             Localization.lang("Error setting field"), JOptionPane.ERROR_MESSAGE);
+                }
+
+                if (keyIsValid == false) {
                     textField.setInvalidBackgroundColor();
                     return;
                 }
