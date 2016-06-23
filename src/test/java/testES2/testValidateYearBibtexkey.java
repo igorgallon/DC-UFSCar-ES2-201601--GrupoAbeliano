@@ -107,7 +107,7 @@ public class testValidateYearBibtexkey {
         StringWriter stringWriter = new StringWriter();
 
         BibEntry entry = new BibEntry("0002", "article");
-        entry.setField("year", "-2017");
+        entry.setField("year", "-2015");
 
         writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
 
@@ -119,7 +119,7 @@ public class testValidateYearBibtexkey {
         StringWriter stringWriter = new StringWriter();
 
         BibEntry entry = new BibEntry("0002", "book");
-        entry.setField("year", "-2017");
+        entry.setField("year", "-2015");
 
         writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
 

@@ -61,15 +61,19 @@ public class testImportFormatReader {
     @Parameterized.Parameters(name = "{index}: {1}")
     public static Collection<Object[]> importFormats() {
         Collection<Object[]> result = new ArrayList<>();
-        result.add(new Object[] {"fileformat/RisImporterTest1.ris", "ris", 1});
-        result.add(new Object[] {"fileformat/IsiImporterTest1.isi", "isi", 1});
-        result.add(new Object[] {"fileformat/SilverPlatterImporterTest1.txt", "silverplatter", 1});
-        result.add(new Object[] {"fileformat/RepecNepImporterTest2.txt", "repecnep", 1});
-        result.add(new Object[] {"fileformat/OvidImporterTest3.txt", "ovid", 1});
-        result.add(new Object[] {"fileformat/Endnote.entries.enw", "refer", 5});
-        result.add(new Object[] {"fileformat/MsBibImporterTest4.xml", "msbib", 1});
-        result.add(new Object[] {"fileformat/MsBibImporterTest4.bib", "bibtex", 1});
+        result.add(new Object[] {"fileformat/RIS_Entry_1.ris", "ris", 1});
+        result.add(new Object[] {"fileformat/RIS_Entry_4.ris", "ris", 4});
+        result.add(new Object[] {"fileformat/RIS_Entry_Dup.ris", "ris", 4});
+        result.add(new Object[] {"fileformat/BIB_Entry_1.bib", "bibtex", 1});
+        result.add(new Object[] {"fileformat/BIB_Entry_4.bib", "bibtex", 4});
+        result.add(new Object[] {"fileformat/BIB_Entry_Dup.bib", "bibtex", 4});
+        result.add(new Object[] {"fileformat/ISI_Entry_1.isi", "isi", 1});
+        result.add(new Object[] {"fileformat/TXT_Entry_1.txt", "refer", 1});
+        result.add(new Object[] {"fileformat/TXT_Entry_4.txt", "refer", 4});
+        result.add(new Object[] {"fileformat/TXT_Entry_Dup.txt", "refer", 4});
+
         return result;
     }
 }
+
 
