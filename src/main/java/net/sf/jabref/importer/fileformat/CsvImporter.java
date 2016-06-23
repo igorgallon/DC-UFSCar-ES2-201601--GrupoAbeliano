@@ -15,37 +15,100 @@ import net.sf.jabref.model.entry.BibEntry;
 
 public class CsvImporter extends ImportFormat {
 
-    // Pode ser desnescessauro
-    private static final Pattern CSV_PATTERN = Pattern.compile("((\"([^\"]*),+([^\"]*)\")||([^\"]*),([^\"]*))\n?");
+    // Padrão de arquivo csv encontrado na internet
+    private static final Pattern CSV_PATTERN = Pattern.compile("(?<=\")([^\"]*)(?=\")|(?<=,|^)([^,]*)(?=,|$)");
 
-
+    // Nome do formato que ira aparecer na caixa de dialogo
     @Override
     public String getFormatName() {
-        return "CSV file";
+        return "CSV";
     }
-
+    // Tipo de arquivo reconhecido
     @Override
     public String getCLIId() {
         return "csv";
     }
 
+    @Override
+    public boolean isRecognizedFormat(InputStream stream) throws IOException {
 
+        // Carregando arquivo no buffer
+        BufferedReader in = new BufferedReader(ImportFormatReader.getReaderDefaultEncoding(stream));
+
+        // String para carregar um linha do arquivo
+        String str;
+        // Lista para carregar as entradas
+        ArrayList<ArrayList<String>> entradas = new ArrayList<ArrayList<String>>();
+
+        // Recebendo as entradas do arquivo, e colocando-as na lista entradas
+        while ((str = in.readLine()) != null) {
+            if (!CsvImporter.CSV_PATTERN.matcher(str).find()) {
+                return false;
+            }
+            entradas.add(tratamentoString(str));
+        }
+        // Verifica se arquivo tem apenas cabecalho ou é vazio
+        if (entradas.size() < 2) {
+            return false;
+        }
+        // Verifica se todas as emtradas possuem o mesmo numero de campos
+        for (int i = 0; i < (entradas.size() - 1); i++) {
+            if (entradas.get(i).size() != entradas.get(i + 1).size()) {
+                return false;
+            }
+        }
+        // Caso o programa chegue ate esse ponto o arquivo é valido
+        return true;
+    }
+
+    @Override
+    public List<BibEntry> importEntries(InputStream stream, OutputPrinter status) throws IOException {
+
+        // Variaveis usadas para coletar as entradas do arquivo e criar uma entrada BibEntry
+        List<BibEntry> bibitems = new ArrayList<>();
+        ArrayList<ArrayList<String>> entradas = new ArrayList<ArrayList<String>>();
+
+        // Caso não tenha problemas na leitura do arquivo
+        try (BufferedReader in = new BufferedReader(ImportFormatReader.getReaderDefaultEncoding(stream))) {
+            String str;
+            BibEntry novaEntrada = new BibEntry();
+
+            // Lendo todas as linha do arquivo e colocando na lista entradas
+            while ((str = in.readLine()) != null) {
+                entradas.add(tratamentoString(str));
+            }
+
+            // Convertendo as entradas recebidas do arquivo para entradas BibEntry
+            for (int i = 1; i < entradas.size(); i++) {
+               novaEntrada = new BibEntry(DEFAULT_BIBTEXENTRY_ID, entradas.get(i).get(0));
+
+                for (int j = 0; j < entradas.get(0).size(); j++) {
+                novaEntrada.setField(entradas.get(0).get(j), entradas.get(i).get(j));
+            }
+
+               bibitems.add(novaEntrada);
+            }
+            // Retorna o resultado final
+            return bibitems;
+    }
+    }
 
     public ArrayList<String> tratamentoString(String linha) {
-
+        // Separadores de campos comuns e epeciais
         char[] separadores = {',', '\n'};
         char caracterEspecial = '"';
 
-        /** Using ArrayList as the number of values are unknown at this stage */
+        // Lista contendo as linhas tratadas
         ArrayList<String> linhasTratadas = new ArrayList<>();
 
+        // tamanho da linha recebida
         int tamanho = linha.length();
         int i = 0;
 
-        /** iterate through all the chars in the line */
+        // Passando por todos os caracteres buscando os separadores
         while (i < tamanho) {
             int proxSeparador = tamanho;
-            /** Get the next separator */
+            // Buscando o proximo separador
             for (int j = 0; j < separadores.length; ++j) {
                 int temp = linha.indexOf(separadores[j], i);
                 if ((temp == -1) || (temp >= proxSeparador)) {
@@ -54,10 +117,10 @@ public class CsvImporter extends ImportFormat {
                 proxSeparador = temp;
             }
 
-            /** Place the special separator at the end of the string */
+            // Colocando o separador especial no fim da linha por default
             int proxSeparadorEspecial = tamanho;
 
-            /** Check if there is any special separator */
+            // verificando se o caracter atual é o separador especial
             int temp = linha.indexOf(caracterEspecial, i);
             if ((temp == -1) || (temp >= proxSeparadorEspecial)) {
                 proxSeparadorEspecial = tamanho;
@@ -65,109 +128,36 @@ public class CsvImporter extends ImportFormat {
                 proxSeparadorEspecial = temp;
             }
 
-            /** if we are at the special separator get the text until the next special separator */
+            // Caso o caracter atual seja o separador especial
             if (proxSeparadorEspecial == i) {
                 char c = linha.charAt(i);
-                /** check if there is any double quote chars in the text */
+                // Busca pelo proximo separador especial para encontrar o campo
                 int d = linha.indexOf((c + "") + (c + ""), i + 1);
 
-                /** if there are two double quota chars jump to the next one - are part of the text */
+                // Caso seja encontrado o proximo separador especial pular para a sua posicao
                 int fim = linha.indexOf(c, d >= 0 ? d + 3 : i + 1);
                 if (fim == -1) {
                     fim = tamanho;
                 }
+                // Colocando no campo a substring que esta entre os separadores especiais
                 String campo = linha.substring(i + 1, fim);
-                /** Replace two double quota with one double quota */
-                campo = campo.replaceAll((c + "") + (c + ""), c + "");
 
+                // Inserindo campo atual na lista de linhasTratadas
+                campo = campo.replaceAll((c + "") + (c + ""), c + "");
                 linhasTratadas.add(campo);
                 i = fim + 1;
             }
-            /** if we are at a normal separator, ignore the separator and jump to the next char */
+            // Caso o caracter atual seja um separador ir para o proximo caracter
             else if (proxSeparador == i) {
                 ++i;
             }
-            /** Copy the value in the result string */
+            // Caso contrario cortar o campo entra o caracter atual e o proximo separador
             else {
                 linhasTratadas.add(linha.substring(i, proxSeparador));
                 i = proxSeparador;
             }
         }
-
-        /** Convert the result to String[] */
+        // Retorna o resultado
         return linhasTratadas;
-    }
-
-    @Override
-    public boolean isRecognizedFormat(InputStream stream) throws IOException {
-
-        try (BufferedReader in = new BufferedReader(ImportFormatReader.getReaderDefaultEncoding(stream))) {
-
-            String str;
-        boolean status = false;
-        int oldpieces = -1, newpieces;
-        ArrayList<String> aux;
-
-        while ((str = in.readLine()) != null) {
-            aux = tratamentoString(str);
-            newpieces = aux.size();
-            if (oldpieces != -1) {
-                if (((oldpieces != newpieces) && (newpieces > 0)) || !CsvImporter.CSV_PATTERN.matcher(str).find()) {
-                    return false;
-                }
-            } else if (!CsvImporter.CSV_PATTERN.matcher(str).find()) {
-                return false;
-            }
-
-            oldpieces = newpieces;
-            //for now its true
-            status = true;
-        }
-        return status;
-        }
-    }
-
-
-    @Override
-    public List<BibEntry> importEntries(InputStream stream, OutputPrinter status) throws IOException {
-        if (stream == null) {
-            throw new IOException("No stream given.");
-        }
-
-        List<BibEntry> bibitems = new ArrayList<>();
-        String[][] entradas = new String[4][4];
-        String[] aux = new String[4];
-        ArrayList<String> campos = new ArrayList<>();
-
-        try (BufferedReader in = new BufferedReader(ImportFormatReader.getReaderDefaultEncoding(stream))) {
-            String str;
-            int i = 0;
-            while ((str = in.readLine()) != null) {
-                campos.clear();
-                campos = tratamentoString(str);
-
-                int tam = campos.size();
-                for (int j = 0; j < tam; j++) {
-                    aux[j] = campos.get(j);
-                }
-                entradas[i] = aux;
-                i++;
-            }
-            BibEntry novaEntrada = new BibEntry();
-            for (String[] entradaAtual : entradas) {
-                if (entradaAtual != entradas[0]) {
-
-                    novaEntrada = new BibEntry(DEFAULT_BIBTEXENTRY_ID, entradaAtual[0]);
-
-                    for (int k = 1; k < entradas[0].length; k++) {
-                        novaEntrada.setField(entradas[0][k], entradaAtual[k]);
-                        System.out.print(entradas[0][k] + "=" + entradaAtual[k]);
-                    }
-                }
-                System.out.println(novaEntrada);
-                bibitems.add(novaEntrada);
-            }
-        }
-        return bibitems;
     }
 }
