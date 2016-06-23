@@ -1,4 +1,4 @@
-package testES2;
+﻿package testES2;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -63,6 +63,7 @@ public class testBibtexEntry {
         BibEntry entry = new BibEntry("0002", "article");
         //set a required field
         entry.setField("author", "Alexandre Tutui");
+        entry.setField("bibtexkey", "A0002");
         entry.setField("title", "Peripécias escolares");
         entry.setField("journal", "Jornal da Escola");
         entry.setField("year", "2016");
@@ -87,7 +88,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Article{A0002," + Globals.NEWLINE +
                 "  author    = {Alexandre Tutui}," + Globals.NEWLINE +
                 "  title     = {Peripécias escolares}," + Globals.NEWLINE +
                 "  journal   = {Jornal da Escola}," + Globals.NEWLINE +
@@ -118,6 +119,7 @@ public class testBibtexEntry {
 
         BibEntry entry = new BibEntry("0003", "article");
         //set a required field
+        entry.setField("bibtexkey", "A0003");
         entry.setField("author", "Victor Pão");
         entry.setField("title", "Como ser um bom garoto");
         entry.setField("journal", "Publicação autônoma");
@@ -129,7 +131,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Article{A0003," + Globals.NEWLINE +
                 "  author  = {Victor Pão}," + Globals.NEWLINE +
                 "  title   = {Como ser um bom garoto}," + Globals.NEWLINE +
                 "  journal = {Publicação autônoma}," + Globals.NEWLINE +
@@ -261,6 +263,7 @@ public class testBibtexEntry {
 
         BibEntry entry = new BibEntry("0002", "book");
         // Campo obrigatorio
+        entry.setField("bibtexkey", "B0002");
         entry.setField("title", "Alice no pais das maravilhas");
         entry.setField("publisher", "Alice");
         entry.setField("year", "1900");
@@ -291,7 +294,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Book{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Book{B0002," + Globals.NEWLINE +
                 "  title     = {Alice no pais das maravilhas}," + Globals.NEWLINE +
                 "  publisher = {Alice}," + Globals.NEWLINE +
                 "  year      = {1900}," + Globals.NEWLINE +
@@ -324,6 +327,7 @@ public class testBibtexEntry {
 
         BibEntry entry = new BibEntry("0003", "book");
         // Campo obrigatorio
+        entry.setField("bibtexkey", "B0003");
         entry.setField("title", "Cavaleiros da Tavola Redonda");
         entry.setField("publisher", "Rei Arthur");
         entry.setField("year", "1800");
@@ -335,7 +339,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Book{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Book{B0003," + Globals.NEWLINE +
                 "  title     = {Cavaleiros da Tavola Redonda}," + Globals.NEWLINE +
                 "  publisher = {Rei Arthur}," + Globals.NEWLINE +
                 "  year      = {1800}," + Globals.NEWLINE +
@@ -444,212 +448,5 @@ public class testBibtexEntry {
         // @formatter:on
 
         assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testAnoValidoArticle() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "article");
-        entry.setField("year", "2016");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-
-        // @formatter:off
-        String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
-                "  year = {2016}," + Globals.NEWLINE +
-                "}" + Globals.NEWLINE;
-        // @formatter:on
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testAnoValidoBook() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "book");
-        entry.setField("year", "2016");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-
-        // @formatter:off
-        String expected = Globals.NEWLINE + "@Book{," + Globals.NEWLINE +
-                "  year = {2016}," + Globals.NEWLINE +
-                "}" + Globals.NEWLINE;
-        // @formatter:on
-
-        assertEquals(expected, actual);
-    }
-
-    // Test works if the year still is 2016
-    @Test(expected = IllegalArgumentException.class)
-    public void testAnoFuturoArticle() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "article");
-        entry.setField("year", "2017");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-    }
-
-    // Test works if the year still is 2016
-    @Test(expected = IllegalArgumentException.class)
-    public void testAnoFuturoBook() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "book");
-        entry.setField("year", "2017");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testAnoInvalidoArticle() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "article");
-        entry.setField("year", "-2017");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testAnoInvalidoArticleBook() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "book");
-        entry.setField("year", "-2017");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testAnoComLetrasArticle() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "article");
-        entry.setField("year", "A2015B");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testAnoComLetrasBook() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "article");
-        entry.setField("year", "A2015B");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-    }
-
-    @Test
-    public void testAnoPreenchendoCamposArticle() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "article");
-        //set a required field
-        entry.setField("author", "Alexandre Tutui");
-        entry.setField("year", "2016");
-        //set an optional field
-        entry.setField("volume", "1");
-        entry.setField("number", "1");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-
-        // @formatter:off
-        String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
-                "  author = {Alexandre Tutui}," + Globals.NEWLINE +
-                "  year   = {2016}," + Globals.NEWLINE +
-                "  volume = {1}," + Globals.NEWLINE +
-                "  number = {1}," + Globals.NEWLINE +
-                "}" + Globals.NEWLINE;
-        // @formatter:on
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testAnoPreenchendoCamposBook() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("0002", "book");
-        //set a required field
-        entry.setField("author", "Alexandre Jesus");
-        entry.setField("year", "2013");
-        //set an optional field
-        entry.setField("volume", "2");
-        entry.setField("number", "1");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-
-        String actual = stringWriter.toString();
-
-        // @formatter:off
-        String expected = Globals.NEWLINE + "@Book{," + Globals.NEWLINE +
-            "  year   = {2013}," + Globals.NEWLINE +
-            "  author = {Alexandre Jesus}," + Globals.NEWLINE +
-            "  volume = {2}," + Globals.NEWLINE +
-            "  number = {1}," + Globals.NEWLINE +
-            "}" + Globals.NEWLINE;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testBibtexkeyValida() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("007", "book");
-        entry.setCiteKey("a0");
-
-        writer.write(entry, stringWriter, BibDatabaseMode.BIBTEX);
-        String actual = stringWriter.toString();
-
-        String expected = Globals.NEWLINE + "@Book{"
-                          + "a0,"
-                          + Globals.NEWLINE + "}"
-                + Globals.NEWLINE;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testBibtexkeyInvalidaNumero() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("057", "book");
-        // Uses a mock function to test, as the verification is
-        // originally made in the gui
-        entry.mockSetCiteKey("12");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testBibtexkeyInvalidaTamanho() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-
-        BibEntry entry = new BibEntry("07", "book");
-        // Uses a mock function to test, as the verification is
-        // originally made in the gui
-        entry.mockSetCiteKey("a");
     }
 }
