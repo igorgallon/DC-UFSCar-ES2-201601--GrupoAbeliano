@@ -71,6 +71,7 @@ public class testImportFormatReader {
         result.add(new Object[] {"fileformat/TXT_Entry_1.txt", "refer", 1});
         result.add(new Object[] {"fileformat/TXT_Entry_4.txt", "refer", 4});
         result.add(new Object[] {"fileformat/TXT_Entry_Dup.txt", "refer", 4});
+        result.add(new Object[] {"fileformat/CSV_Entry_2.csv", "csv", 2});
 
         return result;
     }

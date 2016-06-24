@@ -171,6 +171,39 @@ public class ImportToDatabaseTest {
             }
         }
 
+        databaseWriter.writePartOfDatabase(stringWriter, bibtexContext, database.getEntries(), new SavePreferences());
+
+        String expected = Globals.NEWLINE + "@Article{ab," + Globals.NEWLINE + "  author  = {Victor Pão},"
+                + Globals.NEWLINE + "  title   = {Como ser um bom garoto}," + Globals.NEWLINE
+                + "  journal = {Publicação autônoma}," + Globals.NEWLINE + "  year    = {2015}," + Globals.NEWLINE + "}"
+                + Globals.NEWLINE + Globals.NEWLINE + "@Comment{jabref-meta: databaseType:bibtex;}" + Globals.NEWLINE;
+
+        assertEquals(expected, stringWriter.toString());
+    }
+
+    @Test
+    public void importFileToExistentDatabaseCSV() throws IOException, URISyntaxException {
+        BibEntry entry = new BibEntry("007", "article");
+        entry.setField("bibtexkey", "ab");
+        entry.setField("author", "Victor Pão");
+        entry.setField("title", "Como ser um bom garoto");
+        entry.setField("journal", "Publicação autônoma");
+        entry.setField("year", "2015");
+
+        database.insertEntry(entry);
+        OutputPrinter nullPrinter = new OutputPrinterToNull();
+
+        String resourceName = "fileformat/CSV_Entry_2.csv";
+        String format = "csv";
+        String fileName = Paths.get(ImportToDatabaseTest.class.getResource(resourceName).toURI()).toString();
+
+        List<BibEntry> entryList = reader.importFromFile(format, fileName, nullPrinter);
+        if (entryList.size() != 0) {
+            for (int i = 0; i < entryList.size(); i++) {
+                database.insertEntry(entryList.get(i));
+            }
+        }
+
         databaseWriter.writePartOfDatabase(stringWriter, bibtexContext, database.getEntries(),
                 new SavePreferences());
 
@@ -178,9 +211,78 @@ public class ImportToDatabaseTest {
                 + "@Article{ab," + Globals.NEWLINE
                 + "  author  = {Victor Pão}," + Globals.NEWLINE
                 + "  title   = {Como ser um bom garoto}," + Globals.NEWLINE
-                + "  journal = {Publicação autônoma}," + Globals.NEWLINE 
+                + "  journal = {Publicação autônoma}," + Globals.NEWLINE
                 + "  year    = {2015}," + Globals.NEWLINE
                 + "}" + Globals.NEWLINE + Globals.NEWLINE
+                + "@Article{," + Globals.NEWLINE
+                + "  author = {Tutui}," + Globals.NEWLINE + "}" + Globals.NEWLINE
+                + Globals.NEWLINE
+                + "@Book{," + Globals.NEWLINE + "  author = {Joao}," + Globals.NEWLINE + "}" + Globals.NEWLINE
+                + Globals.NEWLINE
+                + "@Comment{jabref-meta: databaseType:bibtex;}" + Globals.NEWLINE;
+
+        assertEquals(expected, stringWriter.toString());
+    }
+
+    @Test
+    public void importWrongFileToExistentDatabaseCSV() throws IOException, URISyntaxException {
+        BibEntry entry = new BibEntry("007", "article");
+        entry.setField("bibtexkey", "ab");
+        entry.setField("author", "Victor Pão");
+        entry.setField("title", "Como ser um bom garoto");
+        entry.setField("journal", "Publicação autônoma");
+        entry.setField("year", "2015");
+
+        database.insertEntry(entry);
+        OutputPrinter nullPrinter = new OutputPrinterToNull();
+
+        String resourceName = "fileformat/CSV_Entry_Wrong.csv";
+        String format = "bibtex";
+        int count = 1;
+        String fileName = Paths.get(ImportToDatabaseTest.class.getResource(resourceName).toURI()).toString();
+
+        List<BibEntry> entryList = reader.importFromFile(format, fileName, nullPrinter);
+        if (entryList.size() != 0) {
+            for (int i = 0; i < entryList.size(); i++) {
+                database.insertEntry(entryList.get(i));
+            }
+        }
+
+        databaseWriter.writePartOfDatabase(stringWriter, bibtexContext, database.getEntries(), new SavePreferences());
+
+        String expected = Globals.NEWLINE + "@Article{ab," + Globals.NEWLINE + "  author  = {Victor Pão},"
+                + Globals.NEWLINE + "  title   = {Como ser um bom garoto}," + Globals.NEWLINE
+                + "  journal = {Publicação autônoma}," + Globals.NEWLINE + "  year    = {2015}," + Globals.NEWLINE + "}"
+                + Globals.NEWLINE + Globals.NEWLINE + "@Comment{jabref-meta: databaseType:bibtex;}" + Globals.NEWLINE;
+
+        assertEquals(expected, stringWriter.toString());
+    }
+    
+    @Test
+    public void importToEmptyDatabaseCSV() throws IOException, URISyntaxException {
+        OutputPrinter nullPrinter = new OutputPrinterToNull();
+
+        String resourceName = "fileformat/CSV_Entry_2.csv";
+        String format = "csv";
+        int count = 1;
+        String fileName = Paths.get(ImportToDatabaseTest.class.getResource(resourceName).toURI()).toString();
+
+        List<BibEntry> entryList = reader.importFromFile(format, fileName, nullPrinter);
+        if (entryList.size() != 0) {
+            for (int i = 0; i < entryList.size(); i++) {
+                database.insertEntry(entryList.get(i));
+            }
+        }
+        
+        databaseWriter.writePartOfDatabase(stringWriter, bibtexContext, database.getEntries(),
+                new SavePreferences());
+
+        String expected = Globals.NEWLINE
+                + "@Article{," + Globals.NEWLINE
+                + "  author = {Tutui}," + Globals.NEWLINE + "}" + Globals.NEWLINE
+                + Globals.NEWLINE
+                + "@Book{," + Globals.NEWLINE + "  author = {Joao}," + Globals.NEWLINE + "}" + Globals.NEWLINE
+                + Globals.NEWLINE
                 + "@Comment{jabref-meta: databaseType:bibtex;}" + Globals.NEWLINE;
 
         assertEquals(expected, stringWriter.toString());

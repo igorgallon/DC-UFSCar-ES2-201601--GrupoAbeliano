@@ -48,7 +48,7 @@ public class CsvImporter extends ImportFormat {
             entradas.add(tratamentoString(str));
         }
         // Verifica se arquivo tem apenas cabecalho ou é vazio
-        if (entradas.size() < 2) {
+        if (entradas.size() < 1) {
             return false;
         }
         // Verifica se todas as emtradas possuem o mesmo numero de campos
@@ -78,11 +78,15 @@ public class CsvImporter extends ImportFormat {
                 entradas.add(tratamentoString(str));
             }
 
-            // Convertendo as entradas recebidas do arquivo para entradas BibEntry
-            for (int i = 1; i < entradas.size(); i++) {
-               novaEntrada = new BibEntry(DEFAULT_BIBTEXENTRY_ID, entradas.get(i).get(0));
+            // TODO: Gera id unico local, pode causar problemas
+            int id = 0;
 
-                for (int j = 0; j < entradas.get(0).size(); j++) {
+            // Convertendo as entradas recebidas do arquivo para entradas BibEntry
+            // Comeca em 1 porque a primeira posicao indica tipo da entrada
+            for (int i = 1; i < entradas.size(); i++) {
+                novaEntrada = new BibEntry(Integer.toString(id++) + DEFAULT_BIBTEXENTRY_ID, entradas.get(i).get(0));
+
+                for (int j = 1; j < entradas.get(0).size(); j++) {
                 novaEntrada.setField(entradas.get(0).get(j), entradas.get(i).get(j));
             }
 
