@@ -643,12 +643,40 @@ public class ImportInspectionDialog extends JDialog implements ImportInspector, 
                         if (answer == JOptionPane.NO_OPTION) {
                             return;
                         }
+                        // Cria segunda checkbox para definir o que fazer com os dados selecionados
+                        CheckBoxMessage caixa = new CheckBoxMessage(
+                                Localization
+                                        .lang("Click YES to create a new database with the selected entries,or NO merge into the current database."),
+                                Localization.lang(""), false);
+                        int answer2 = JOptionPane.showConfirmDialog(ImportInspectionDialog.this, caixa,
+                                Localization.lang("Duplicates found"), JOptionPane.YES_NO_OPTION);
+
+                        // Caso o usuario queira criar um novo DB
+                        if (answer2 == JOptionPane.YES_OPTION) {
+
+                            // Criando novo database padrao
+                            BibDatabase newDatabase = new BibDatabase();
+                            MetaData newMetaData = new MetaData();
+                            BibDatabaseContext newDB = new BibDatabaseContext(newDatabase, newMetaData,
+                                    new Defaults(BibDatabaseMode.BIBTEX));
+
+                            final List<BibEntry> selected = getSelectedEntries();
+                            BasePanel novaAba = new BasePanel(frame, newDB, Globals.prefs.getDefaultEncoding());
+                            frame.addTab(newDB, Globals.prefs.getDefaultEncoding(), true);
+                            // Adicionando entradas selecionadas ao novo DB
+                            if (selected.size() != 0) {
+                                for (int i = 0; i < selected.size(); i++) {
+                                    novaAba.getDatabase().insertEntry(selected.get(i));
+                                }
+                            }
+
+                        }
                         break;
                     }
                 }
             }
 
-            // The compund undo action used to contain all changes made by this
+            // The compound undo action used to contain all changes made by this
             // dialog.
             NamedCompound ce = new NamedCompound(undoName);
 
