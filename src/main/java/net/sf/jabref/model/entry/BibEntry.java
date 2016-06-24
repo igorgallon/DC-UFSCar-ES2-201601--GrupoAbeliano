@@ -394,7 +394,7 @@ public class BibEntry implements Cloneable {
             checkAuthorOrEditor(value);
             break;
         case "number":
-            checkNumber(value);
+            checkNumberField(value);
             break;
             case "month":
               checkMonth(value);
@@ -402,13 +402,22 @@ public class BibEntry implements Cloneable {
         }
     }
 
-    public void checkNumber(String value) {
+    /**
+     * Checks if the value is a number field.
+     *
+     * @param value The value to check.
+     */
+    public void checkNumberField(String value) {
         if (!value.matches("[0-9]+")) {
             throw new IllegalArgumentException("The value of number should have only numbers.");
         }
     }
 
-
+    /**
+     * Checks if the value is a month (in numbers or names).
+     *
+     * @param value The month to check.
+     */
     public void checkMonth(String value) {
         String[] validMonths = {"january", "janeiro", "february", "fevereiro", "march", "março", "april", "abril",
                 "may",
@@ -437,6 +446,11 @@ public class BibEntry implements Cloneable {
 
     }
 
+    /**
+     * Checks if the author/editor is valid.
+     *
+     * @param value The string to check.
+     */
     public void checkAuthorOrEditor(String value) {
         if ((value != null) && !value.isEmpty()) {
             for (char c : value.toCharArray()) {
@@ -446,6 +460,7 @@ public class BibEntry implements Cloneable {
             }
         }
     }
+
     /**
      * Checks if the year is valid.
      *
