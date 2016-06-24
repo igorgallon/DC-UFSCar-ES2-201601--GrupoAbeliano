@@ -1,4 +1,4 @@
-package testES2;
+﻿package testES2;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -8,7 +8,6 @@ import net.sf.jabref.bibtex.BibEntryWriter;
 import net.sf.jabref.exporter.LatexFieldFormatter;
 import net.sf.jabref.model.database.BibDatabaseMode;
 import net.sf.jabref.model.entry.BibEntry;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -64,6 +63,7 @@ public class testBibtexEntry {
         BibEntry entry = new BibEntry("0002", "article");
         //set a required field
         entry.setField("author", "Alexandre Tutui");
+        entry.setField("bibtexkey", "A0002");
         entry.setField("title", "Peripécias escolares");
         entry.setField("journal", "Jornal da Escola");
         entry.setField("year", "2016");
@@ -88,7 +88,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Article{A0002," + Globals.NEWLINE +
                 "  author    = {Alexandre Tutui}," + Globals.NEWLINE +
                 "  title     = {Peripécias escolares}," + Globals.NEWLINE +
                 "  journal   = {Jornal da Escola}," + Globals.NEWLINE +
@@ -119,6 +119,7 @@ public class testBibtexEntry {
 
         BibEntry entry = new BibEntry("0003", "article");
         //set a required field
+        entry.setField("bibtexkey", "A0003");
         entry.setField("author", "Victor Pão");
         entry.setField("title", "Como ser um bom garoto");
         entry.setField("journal", "Publicação autônoma");
@@ -130,7 +131,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Article{A0003," + Globals.NEWLINE +
                 "  author  = {Victor Pão}," + Globals.NEWLINE +
                 "  title   = {Como ser um bom garoto}," + Globals.NEWLINE +
                 "  journal = {Publicação autônoma}," + Globals.NEWLINE +
@@ -262,6 +263,7 @@ public class testBibtexEntry {
 
         BibEntry entry = new BibEntry("0002", "book");
         // Campo obrigatorio
+        entry.setField("bibtexkey", "B0002");
         entry.setField("title", "Alice no pais das maravilhas");
         entry.setField("publisher", "Alice");
         entry.setField("year", "1900");
@@ -292,7 +294,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Book{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Book{B0002," + Globals.NEWLINE +
                 "  title     = {Alice no pais das maravilhas}," + Globals.NEWLINE +
                 "  publisher = {Alice}," + Globals.NEWLINE +
                 "  year      = {1900}," + Globals.NEWLINE +
@@ -325,6 +327,7 @@ public class testBibtexEntry {
 
         BibEntry entry = new BibEntry("0003", "book");
         // Campo obrigatorio
+        entry.setField("bibtexkey", "B0003");
         entry.setField("title", "Cavaleiros da Tavola Redonda");
         entry.setField("publisher", "Rei Arthur");
         entry.setField("year", "1800");
@@ -336,7 +339,7 @@ public class testBibtexEntry {
         String actual = stringWriter.toString();
 
         // @formatter:off
-        String expected = Globals.NEWLINE + "@Book{," + Globals.NEWLINE +
+        String expected = Globals.NEWLINE + "@Book{B0003," + Globals.NEWLINE +
                 "  title     = {Cavaleiros da Tavola Redonda}," + Globals.NEWLINE +
                 "  publisher = {Rei Arthur}," + Globals.NEWLINE +
                 "  year      = {1800}," + Globals.NEWLINE +
@@ -416,7 +419,7 @@ public class testBibtexEntry {
     }
 
     @Test
-    public void testTodosCamposPreenchidosBook() throws IOException {
+    public void testTodosCamposOpcionaisPreenchidosBook() throws IOException {
         StringWriter stringWriter = new StringWriter();
 
         BibEntry entry = new BibEntry("0002", "book");
@@ -446,5 +449,4 @@ public class testBibtexEntry {
 
         assertEquals(expected, actual);
     }
-
 }

@@ -17,7 +17,7 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class ImportFormatReaderTest {
+public class testImportFormatReader {
 
     private ImportFormatReader reader;
 
@@ -27,11 +27,11 @@ public class ImportFormatReaderTest {
     private final String fileName;
 
 
-    public ImportFormatReaderTest(String resource, String format, int count) throws URISyntaxException {
+    public testImportFormatReader(String resource, String format, int count) throws URISyntaxException {
         this.resourceName = resource;
         this.format = format;
         this.count = count;
-        this.fileName = Paths.get(ImportFormatReaderTest.class.getResource(resourceName).toURI()).toString();
+        this.fileName = Paths.get(testImportFormatReader.class.getResource(resourceName).toURI()).toString();
 
     }
 

@@ -132,6 +132,20 @@ public class BibEntry implements Cloneable {
     }
 
     /**
+     * Mock function to test, as the verification was made in the gui
+     */
+    public void mockSetCiteKey(String newCiteKey) {
+        // Checking if the key has at least 2 characters
+        if (newCiteKey.length() < 2) {
+            throw new IllegalArgumentException("BibTeX key must have at least 2 characters.");
+        }
+        // Checking if the first character is a letter
+        else if (!Character.isLetter(newCiteKey.charAt(0))) {
+            throw new IllegalArgumentException("BibTeX key must have a letter in the first position.");
+        }
+    }
+
+    /**
      * Returns the cite key AKA citation key AKA BibTeX key, or null if it is not set.
      *
      * Note: this is <emph>not</emph> the internal Id of this entry. The internal Id is always present, whereas the BibTeX key might not be present.
@@ -352,10 +366,47 @@ public class BibEntry implements Cloneable {
             throw new IllegalArgumentException("The field name '" + name + "' is reserved");
         }
 
+        // Checks if the value is valid
+        // Only checking year currently
+        checkField(name, value);
+
         changed = true;
 
         fields.put(fieldName, value);
         eventBus.post(new FieldChangedEvent(this, fieldName, value));
+    }
+
+    /**
+     * Checks if the entry is valid. Only the year field is implemented.
+     *
+     * @param name  The field to check.
+     * @param value The value to check.
+     */
+    public void checkField(String fieldName, String value) {
+        switch (fieldName) {
+        case "year":
+            checkYear(value);
+            break;
+        }
+    }
+
+    /**
+     * Checks if the year is valid.
+     *
+     * @param value The year to check.
+     */
+    public void checkYear(String value) {
+        if (value.matches("[0-9]+")) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy");
+            Date date = new Date();
+            int currentYear = Integer.valueOf(dateFormat.format(date));
+
+            if (currentYear < Integer.parseInt(value)) {
+                throw new IllegalArgumentException("The value of year is greater than the current year.");
+            }
+        } else {
+            throw new IllegalArgumentException("The value of year is illegal.");
+        }
     }
 
     /**

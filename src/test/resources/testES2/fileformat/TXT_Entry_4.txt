@@ -1,0 +1,172 @@
+%0 
+%0 Book
+%A Gabriero, Tutui
+%D 2015
+%T Livro do Tutui
+%E mesmo, Tutui
+%B 3
+%C Not
+%I Tutui
+%V 1
+%6
+%N 2
+%P 
+%& 
+%Y 
+%S 
+%7 1
+%8 4
+%9
+%? 
+%! 
+%Z 
+%@ 
+%(
+%)
+%*
+%L
+%M
+
+%2 
+%3 book
+%4 
+%# 
+%$ 
+%F B1111
+%K 
+%X Muito legal
+%Z Nop
+
+
+%+
+%^
+
+%0 
+%0 Book Section
+%A Ttui
+%D 2014
+%T Tutui e cia
+%E Eu
+%B 
+%C 
+%I Tutui
+%V 1
+%6
+%N 
+%P 100
+%& 4
+%Y 
+%S 1
+%7 
+%8 
+%9 1
+%? 
+%! 
+%Z 
+%@ 
+%(
+%)
+%*
+%L
+%M
+
+%2 
+%3 inbook
+%4 
+%# 
+%$ 
+%F I1234
+%K 
+%X Nop
+%Z 
+
+
+%+
+%^
+
+%0 
+%0 Journal Article
+%A Tutui
+%D 2016
+%T Contos do Tutui
+%E 
+%B EnC
+%C 
+%I 
+%V 1
+%6
+%N 2
+%P 10
+%& 
+%Y 
+%S 
+%7
+%8 4
+%9
+%? 
+%! 
+%Z 
+%@ 
+%(
+%)
+%*
+%L
+%M
+
+%2 
+%3 article
+%4 
+%# 
+%$ 
+%F A1234
+%K 
+%X Nenhum abstract
+%Z 5
+
+
+%+
+%^
+
+%0 
+%0 Computer Program
+%A Tutui
+%D 2016
+%T Manual de peripecias do tutui
+%E
+%B 
+%C Nop
+%I Nenhum
+%V 
+%6
+%N 
+%P 
+%& 
+%Y 
+%S 
+%7 3
+%8 4
+%9
+%? 
+%! 
+%Z 
+%@ 
+%(
+%)
+%*
+%L
+%M
+
+%2 
+%3 manual
+%4 
+%# 
+%$ 
+%F M1234
+%K 
+%X Nop
+%Z 9
+
+
+%+
+%^
+

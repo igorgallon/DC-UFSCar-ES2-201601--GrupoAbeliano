@@ -1,0 +1,43 @@
+%0 
+%0 Journal Article
+%A Tutui
+%D 2016
+%T Contos do Tutui
+%E 
+%B EnC
+%C 
+%I 
+%V 1
+%6
+%N 2
+%P 10
+%& 
+%Y 
+%S 
+%7
+%8 4
+%9
+%? 
+%! 
+%Z 
+%@ 
+%(
+%)
+%*
+%L
+%M
+
+%2 
+%3 article
+%4 
+%# 
+%$ 
+%F A1234
+%K 
+%X Nenhum abstract
+%Z 5
+
+
+%+
+%^
+
