@@ -420,9 +420,9 @@ public class BibEntry implements Cloneable {
      */
     public void checkMonth(String value) {
         String[] validMonths = {"january", "janeiro", "february", "fevereiro", "march", "março", "april", "abril",
-                "may",
-                        "maio", "june", "junho", "july", "julho", "august", "agosto",
-                "september", "setembro", "october", "outubro", "november", "novembro", "dezembro", "december"};
+                "may", "maio", "june", "junho", "july", "julho", "august", "agosto", "september", "setembro", "october",
+                "outubro", "november", "novembro", "dezembro", "december", "##jan##", "##feb##", "##mar##", "##apr##",
+                "##may##", "##jun##", "##jul##", "##aug##", "##sep##", "##oct##", "##nov##", "##dec##"};
         char c = value.charAt(0);
         boolean isEqual = false;
 
