@@ -61,13 +61,9 @@ public class testImportFormatReader {
     @Parameterized.Parameters(name = "{index}: {1}")
     public static Collection<Object[]> importFormats() {
         Collection<Object[]> result = new ArrayList<>();
-        result.add(new Object[] {"fileformat/RIS_Entry_1.ris", "ris", 1});
-        result.add(new Object[] {"fileformat/RIS_Entry_4.ris", "ris", 4});
-        result.add(new Object[] {"fileformat/RIS_Entry_Dup.ris", "ris", 4});
         result.add(new Object[] {"fileformat/BIB_Entry_1.bib", "bibtex", 1});
         result.add(new Object[] {"fileformat/BIB_Entry_4.bib", "bibtex", 4});
         result.add(new Object[] {"fileformat/BIB_Entry_Dup.bib", "bibtex", 4});
-        result.add(new Object[] {"fileformat/ISI_Entry_1.isi", "isi", 1});
         result.add(new Object[] {"fileformat/TXT_Entry_1.txt", "refer", 1});
         result.add(new Object[] {"fileformat/TXT_Entry_4.txt", "refer", 4});
         result.add(new Object[] {"fileformat/TXT_Entry_Dup.txt", "refer", 4});

@@ -212,7 +212,7 @@ public class testBibtexEntry {
         StringWriter stringWriter = new StringWriter();
 
         BibEntry entry = new BibEntry("0006", "article");
-        entry.setField("author", "Furacão 2000");
+        entry.setField("author", "Furacão Dois Mil");
         entry.setField("volume", "2");
         entry.setField("abstract", "Grandes sucessos de 2000");
         entry.setField("comment", "Melhor coletânea de 2000");
@@ -225,7 +225,7 @@ public class testBibtexEntry {
 
         // @formatter:off
         String expected = Globals.NEWLINE + "@Article{," + Globals.NEWLINE +
-                "  author   = {Furacão 2000}," + Globals.NEWLINE +
+                "  author   = {Furacão Dois Mil}," + Globals.NEWLINE +
                 "  volume   = {2}," + Globals.NEWLINE +
                 "  abstract = {Grandes sucessos de 2000}," + Globals.NEWLINE +
                 "  comment  = {Melhor coletânea de 2000}," + Globals.NEWLINE +
