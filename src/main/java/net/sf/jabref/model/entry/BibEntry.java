@@ -387,9 +387,65 @@ public class BibEntry implements Cloneable {
         case "year":
             checkYear(value);
             break;
+        case "author":
+            checkAuthorOrEditor(value);
+            break;
+        case "editor":
+            checkAuthorOrEditor(value);
+            break;
+        case "number":
+            checkNumber(value);
+            break;
+            case "month":
+              checkMonth(value);
+            break;
         }
     }
 
+    public void checkNumber(String value) {
+        if (!value.matches("[0-9]+")) {
+            throw new IllegalArgumentException("The value of number should have only numbers.");
+        }
+    }
+
+
+    public void checkMonth(String value) {
+        String[] validMonths = {"january", "janeiro", "february", "fevereiro", "march", "março", "april", "abril",
+                "may",
+                        "maio", "june", "junho", "july", "julho", "august", "agosto",
+                "september", "setembro", "october", "outubro", "november", "novembro", "dezembro", "december"};
+        char c = value.charAt(0);
+        boolean isEqual = false;
+
+
+        if (Character.isDigit(c)) {
+            System.out.println(c);
+            System.out.println(Integer.valueOf(value));
+            if ((Integer.valueOf(value) > 12) || (Integer.valueOf(value) < 1)) {
+                throw new IllegalArgumentException("The value of month should be a number between 1-12 or its name");
+            }
+            isEqual = true;
+        }
+        for (int i = 0; i < validMonths.length; i++) {
+            if (value.toLowerCase().equals(validMonths[i])) {
+                isEqual = true;
+            }
+        }
+        if (!isEqual) {
+            throw new IllegalArgumentException("The value of month should be a number between 1-12 or its name");
+        }
+
+    }
+
+    public void checkAuthorOrEditor(String value) {
+        if ((value != null) && !value.isEmpty()) {
+            for (char c : value.toCharArray()) {
+                if (Character.isDigit(c)) {
+                    throw new IllegalArgumentException("The value of author should not have any numbers.");
+                }
+            }
+        }
+    }
     /**
      * Checks if the year is valid.
      *
